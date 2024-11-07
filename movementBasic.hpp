@@ -1,6 +1,6 @@
-#define ENA 10
-#define INPUT_L_1 9
-#define INPUT_L_2 8
+#define ENA 11
+#define INPUT_L_1 12
+#define INPUT_L_2 13
 
 #define ENB 5
 #define INPUT_R_1 7
@@ -51,7 +51,7 @@ void setRightMotorStop() {
   setRightMotorSpeed(0);
 }
 
-void initializeMotors() {
+void initDCMotors() {
   pinMode(ENA, OUTPUT);
   pinMode(ENB, OUTPUT);
   pinMode(INPUT_L_1, OUTPUT);

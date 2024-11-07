@@ -1,20 +1,53 @@
-#include "movements.hpp"
+#include "helpers.hpp"
 
-void setup() {
-  // put your setup code here, to run once:
-  initializeMotors();
+void setup()
+{
+  initTBWC();
 }
 
-void loop() {
-  gearForward(120);
-  delay(1000);
+#define STAGE_ORIGIN 0
+#define STAGE_FORWARD 1
+#define STAGE_BACKWARD 2
+#define STAGE_END 3
 
-  brake();
-  delay(2000);
+int stage = STAGE_ORIGIN;
 
-  gearBackward(120);
-  delay(1000);
+int speed = 250;
 
-  gearNeutral();
-  delay(3000);
+int forwardStartTime, backwardStartTime, singleRunInterval;
+
+void loop()
+{
+  switch (stage)
+  {
+  case STAGE_ORIGIN:
+  {
+    gearForward(speed);
+    forwardStartTime = millis();
+    stage = STAGE_FORWARD;
+    break;
+  }
+  case STAGE_FORWARD:
+  {
+    if (isIRDetected())
+    {
+      brake();
+      singleRunInterval = millis() - forwardStartTime;
+      delay(1000);
+      backwardStartTime = millis();
+      gearBackward(speed);
+      stage = STAGE_BACKWARD;
+    }
+    break;
+  }
+  case STAGE_BACKWARD:
+  {
+    if (millis() - backwardStartTime > singleRunInterval)
+    {
+      brake();
+      stage = STAGE_END;
+    }
+    break;
+  }
+  }
 }

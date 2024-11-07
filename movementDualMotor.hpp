@@ -10,18 +10,18 @@ int currentMovement = MOVEMENT_STATIONARY;
 void gearForward(int speed) {
   currentMovement = MOVEMENT_FORWARD;
   setLeftMotorCCW(speed);
-  // setRightMotorCCW(speed);
+  setRightMotorCCW(speed);
 }
 
 void gearBackward(int speed) {
   currentMovement = MOVEMENT_BACKWARD;
   setLeftMotorCW(speed);
-  // setRightMotorCW(speed);
+  setRightMotorCW(speed);
 }
 
 void gearNeutral() {
   setLeftMotorStop();
-  // setRightMotorStop();
+  setRightMotorStop();
 }
 
 void brake() {
@@ -29,7 +29,7 @@ void brake() {
     case MOVEMENT_FORWARD:
       {
         setLeftMotorCW(currentSpeedLeft);
-        // setRightMotorCW(currentSpeedRight);
+        setRightMotorCW(currentSpeedRight);
         delay(220);
         gearNeutral();
         break;
@@ -37,7 +37,7 @@ void brake() {
     case MOVEMENT_BACKWARD:
       {
         setLeftMotorCCW(currentSpeedLeft);
-        // setRightMotorCCW(currentSpeedRight);
+        setRightMotorCCW(currentSpeedRight);
         delay(220);
         gearNeutral();
         break;
