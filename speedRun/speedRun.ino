@@ -1,5 +1,7 @@
 #include <helpers.hpp>
 
+#define MODE_SELECTOR_PIN 5
+
 void setup()
 {
   initTBWC();
@@ -29,7 +31,7 @@ void loop()
   }
   case STAGE_FORWARD:
   {
-    if (isIRDetected())
+    if (!isIRDetected())
     {
       brake();
       singleRunInterval = millis() - forwardStartTime;
