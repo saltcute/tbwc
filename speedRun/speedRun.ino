@@ -35,7 +35,6 @@ void loop()
     {
       brake();
       singleRunInterval = millis() - forwardStartTime;
-      delay(1000);
       backwardStartTime = millis();
       gearBackward(speed);
       stage = STAGE_BACKWARD;
