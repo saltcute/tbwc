@@ -29,20 +29,10 @@ void loop()
   {
   case STAGE_ORIGIN:
   {
+    // The wheelchair will move forward forever.
     gearForward(speed);
     forwardStartTime = millis();
-    stage = STAGE_FORWARD;
-    break;
-  }
-  case STAGE_FORWARD:
-  {
-    // The wheel chair moves forward forever.
-    
-    // if (millis() - forwardStartTime > RUN_PERIOD)
-    // {
-    //   brake();
-    //   stage = STAGE_END;
-    // }
+    stage = STAGE_END;
     break;
   }
   }
