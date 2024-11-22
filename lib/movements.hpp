@@ -7,23 +7,40 @@
 #define MOVEMENT_STATIONARY 5
 
 int currentMovement = MOVEMENT_STATIONARY;
+
+/**
+ * Move the wheelchair forward.
+ * 
+ * @param speed The speed for the wheelchair to move at.
+ */
 void gearForward(int speed) {
   currentMovement = MOVEMENT_FORWARD;
   setLeftMotorCCW(speed);
   // setRightMotorCCW(speed);
 }
 
+/**
+ * Move the wheelchair backward.
+ * 
+ * @param speed The speed for the wheelchair to move at.
+ */
 void gearBackward(int speed) {
   currentMovement = MOVEMENT_BACKWARD;
   setLeftMotorCW(speed);
   // setRightMotorCW(speed);
 }
 
+/**
+ * Stop giving power to motors.
+ */
 void gearNeutral() {
   setLeftMotorStop();
   // setRightMotorStop();
 }
 
+/**
+ * Stop the wheelchair. Simulates braking.
+ */
 void brake() {
   switch (currentMovement) {
     case MOVEMENT_FORWARD:

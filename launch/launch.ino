@@ -14,9 +14,14 @@ void setup()
 
 int stage = STAGE_ORIGIN;
 
-int speed = 250;
+int speed = 200;
 
-int forwardStartTime, backwardStartTime, singleRunInterval;
+int forwardStartTime;
+
+/**
+ * in ms.
+ */
+const int RUN_PERIOD = 4500;
 
 void loop()
 {
@@ -24,6 +29,8 @@ void loop()
     {
     case STAGE_ORIGIN:
     {
+        // Resets the servo motor to the initial position.
+        setServoAngle(0);
         gearForward(speed);
         forwardStartTime = millis();
         stage = STAGE_FORWARD;
@@ -31,21 +38,16 @@ void loop()
     }
     case STAGE_FORWARD:
     {
-        if (!isIRDetected())
+        // After moving forward for a designated time.
+        if (millis() - forwardStartTime > RUN_PERIOD)
         {
+            // The wheel chair will stop, wait 1000ms
             brake();
-            singleRunInterval = millis() - forwardStartTime;
             delay(1000);
+            // And then trigger the launching mechanism with the servo motor.
             setServoAngle(180);
-            stage = STAGE_END;
-        }
-        break;
-    }
-    case STAGE_BACKWARD:
-    {
-        if (millis() - backwardStartTime > singleRunInterval)
-        {
-            brake();
+            delay(1500);
+            setServoAngle(0);
             stage = STAGE_END;
         }
         break;
