@@ -14,9 +14,18 @@ void setup()
 
 int stage = STAGE_ORIGIN;
 
-int speed = 250;
+const int speed = 250;
 
-int forwardStartTime, backwardStartTime, singleRunInterval;
+int forwardStartTime;
+
+/**
+ * The time the wheel chair goes forward in ms.
+ */
+const int RUN_PERIOD = 6500;
+/**
+ * The time the wheel chair slows down in the later part of going forward.
+ */
+const int SLOW_DOWN_PERIOD = 700;
 
 void loop()
 {
@@ -31,23 +40,24 @@ void loop()
   }
   case STAGE_FORWARD:
   {
-    if (!isIRDetected())
+    int currentRunTime = millis() - forwardStartTime;
+    if (currentRunTime > RUN_PERIOD)
     {
-      brake();
-      singleRunInterval = millis() - forwardStartTime;
-      backwardStartTime = millis();
+      // brake();
+      // The wheel chair will move backwards forever after reaching the time limit.
       gearBackward(speed);
       stage = STAGE_BACKWARD;
+    } else if (RUN_PERIOD - (currentRunTime) < SLOW_DOWN_PERIOD) {
+      int progress = SLOW_DOWN_PERIOD - (RUN_PERIOD - (currentRunTime));
+      // The wheel chair will slow down to 70% of the designated speed near the end.
+      gearForward(speed * (0.7 + 0.3 * progress / SLOW_DOWN_PERIOD));
     }
     break;
   }
   case STAGE_BACKWARD:
   {
-    if (millis() - backwardStartTime > singleRunInterval)
-    {
-      brake();
-      stage = STAGE_END;
-    }
+    // brake();
+    stage = STAGE_END;
     break;
   }
   }
